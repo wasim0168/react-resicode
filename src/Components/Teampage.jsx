@@ -75,15 +75,15 @@ const TeamPage = () => {
     {
       id: 5,
       name: "Devesh Wadibhasme",
-      position: "ReactJS Developer",
+      position: "Fullstack Developer",
       department: "development",
       image: "👩‍💻",
       bio: "Backend specialist building robust server architectures",
       fullBio: "Building dynamic, high-performance React applications with modern architectures and best practices.",
-      skills: ["React", "Redux", "TypeScript"],
+      skills: ["React", "Telwind css", "TypeScript"],
       email: "",
       linkedin: "",
-      projects: 5,
+      projects: 20,
       experience: 2,
       funFact: "Plays classical guitar"
     },
