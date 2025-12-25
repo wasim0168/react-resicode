@@ -1,191 +1,222 @@
-// ContactPage.jsx
-import React, { useState } from 'react';
-import './Contact.css';
-import SocialLinks from './SocialLink';
+import React, { useState } from "react";
+import SocialLinks from "./SocialLink";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    phone: "",
+    serviceType: "",
+    subject: "",
+    message: "",
   });
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+  const serviceTypes = [
+    "Web Development",
+    "Mobile App Development",
+    "UI/UX Design",
+    "Digital Marketing",
+    "Consulting",
+    "Other",
+  ];
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  // In your ContactPage.jsx, update the handleSubmit function:
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  
+  try {
+    // Replace the mock API call with actual backend call
+    const response = await fetch('http://localhost:5000/api/contact/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData)
+    });
     
-    // Simulate API call
-    try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+    const result = await response.json();
+    
+    if (response.ok && result.success) {
       setSubmitStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch (error) {
+      setFormData({ name: '', email: '', phone: '', serviceType: '', subject: '', message: '' });
+      
+      // Show success message
+      alert(result.message || 'Message sent successfully!');
+    } else {
       setSubmitStatus('error');
-    } finally {
-      setIsSubmitting(false);
+      alert(result.message || 'Failed to send message. Please try again.');
     }
-  };
+  } catch (error) {
+    setSubmitStatus('error');
+    console.error('Error submitting form:', error);
+    alert('Network error. Please check your connection and try again.');
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
+  
 
   return (
-    <div className="contact-page">
-      <div className="contact-container">
-        {/* Header Section */}
-        <div className="contact-header">
-          <h1>Get In Touch</h1>
-          <p>We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+    <section className="bg-gray-900 py-16 px-4">
+      <div className="max-w-7xl mx-auto">
+
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
+            Get in Touch with <span className="text-yellow-300">RESICODE</span>
+          </h1>
+          <p className="text-gray-300 max-w-3xl mx-auto">
+            Whether you want to start a project or just say hello, our team is
+            ready to help.
+          </p>
         </div>
 
-        <div className="contact-content">
-          {/* Contact Information */}
-          <div className="contact-info">
-            <div className="info-card">
-              <div className="icon-wrapper">
-                <i className="fas fa-phone"></i>
-              </div>
-              <h3>Phone</h3>
-              <p>+91 9529468439</p>
-              <span>Mon-Fri from 8am to 5pm</span>
-            </div>
+        {/* Main Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
 
-            <div className="info-card">
-              <div className="icon-wrapper">
-                <i className="fas fa-envelope"></i>
-              </div>
-              <h3>Email</h3>
-              <p>resicode003@gmail.com</p>
-              <span>We'll reply within 24 hours</span>
-            </div>
+          {/* LEFT INFO */}
+          <div className="space-y-10">
 
-            <div className="info-card">
-              <div className="icon-wrapper">
-                <i className="fas fa-map-marker-alt"></i>
-              </div>
-              <h3>Office</h3>
-              <p>RESICODE</p>
-              <span>Memon Colony Front Of Dadi Amma Masjid Nagpur 440026</span>
-            </div>
+            {/* Quick Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+  {[
+    ["Email Us", "resicode003@gmail.com", ""],
+    ["Call Us", "9529468439", ""],
+    ["Live Chat", "Start Chat", ""],
+  ].map((item, i) => (
+    <div
+      key={i}
+      className="
+        bg-gray-800 border border-gray-700 rounded-xl 
+        p-6 flex flex-col items-center justify-center 
+        text-center min-h-[160px]
+        hover:-translate-y-1 hover:shadow-xl 
+        transition duration-300
+      "
+    >
+      {/* Icon */}
+      <div className="text-3xl mb-3">{item[2]}</div>
 
-            <div className="info-card">
-              <div className="icon-wrapper">
-                <i className="fas fa-clock"></i>
+      {/* Title */}
+      <h3 className="text-lg font-bold text-yellow-300">
+        {item[0]}
+      </h3>
+
+      {/* Value */}
+      <p className="text-gray-300 mt-2 break-all">
+        {item[1]}
+      </p>
+    </div>
+  ))}
+</div>
+
+
+            {/* Office Info */}
+            <div className="bg-gray-800 border border-gray-700 rounded-xl p-8">
+              <h2 className="text-2xl font-bold text-white mb-4">
+                Visit Our Office
+              </h2>
+              <p className="text-gray-300 mb-6">
+                Momon Colony, Old Kampthee Road, Kalamna, Nagpur, Maharashtra
+                - 440026
+              </p>
+
+              <div className="space-y-4 text-gray-300">
+                <p>🕒 Mon - Sat: 10 AM – 7 PM</p>
+                <p>⭐ Rated 4.9/5 by clients</p>
+                <p>🚗 Ample parking available</p>
               </div>
-              <h3>Business Hours</h3>
-              <p>Monday - Friday</p>
-              <span>9:00 AM - 6:00 PM EST</span>
             </div>
           </div>
 
-          {/* Contact Form */}
-          <div className="contact-form-container">
-            <form onSubmit={handleSubmit} className="contact-form">
-              <div className="form-group">
-                <label htmlFor="name">Full Name *</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
+          {/* RIGHT FORM */}
+          <div className="bg-gray-800 border border-gray-700 rounded-xl p-8">
+            <h2 className="text-2xl font-bold text-white mb-6">
+              Send Us a Message
+            </h2>
+
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {[
+                ["name", "Full Name *", "text"],
+                ["email", "Email Address *", "email"],
+                ["phone", "Phone Number", "tel"],
+                ["subject", "Subject", "text"],
+              ].map(([name, label, type]) => (
+                <div key={name}>
+                  <label className="block text-gray-300 mb-1">{label}</label>
+                  <input
+                    type={type}
+                    name={name}
+                    value={formData[name]}
+                    onChange={handleChange}
+                    className="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white"
+                  />
+                </div>
+              ))}
+
+              <div>
+                <label className="block text-gray-300 mb-1">
+                  Service Type
+                </label>
+                <select
+                  name="serviceType"
+                  value={formData.serviceType}
                   onChange={handleChange}
-                  required
-                  placeholder="Enter your full name"
-                />
+                  className="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white"
+                >
+                  <option value="">Select Service</option>
+                  {serviceTypes.map((s, i) => (
+                    <option key={i}>{s}</option>
+                  ))}
+                </select>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="email">Email Address *</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  placeholder="Enter your email address"
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="subject">Subject *</label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  required
-                  placeholder="What's this about?"
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="message">Message *</label>
+              <div>
+                <label className="block text-gray-300 mb-1">
+                  Message *
+                </label>
                 <textarea
-                  id="message"
                   name="message"
+                  rows="5"
                   value={formData.message}
                   onChange={handleChange}
-                  required
-                  rows="6"
-                  placeholder="Tell us how we can help you..."
-                ></textarea>
+                  className="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white"
+                />
               </div>
 
-              <button 
-                type="submit" 
-                className={`submit-btn ${isSubmitting ? 'submitting' : ''}`}
+              <button
                 disabled={isSubmitting}
+                className="w-full bg-yellow-300 text-black font-bold py-3 rounded-lg hover:opacity-90 transition"
               >
-                {isSubmitting ? (
-                  <>
-                    <div className="spinner"></div>
-                    Sending...
-                  </>
-                ) : (
-                  'Send Message'
-                )}
+                {isSubmitting ? "Sending..." : "Send Message"}
               </button>
 
-              {submitStatus === 'success' && (
-                <div className="success-message">
-                  <i className="fas fa-check-circle"></i>
-                  Thank you! Your message has been sent successfully.
-                </div>
-              )}
-
-              {submitStatus === 'error' && (
-                <div className="error-message">
-                  <i className="fas fa-exclamation-circle"></i>
-                  Sorry, there was an error sending your message. Please try again.
-                </div>
+              {submitStatus === "success" && (
+                <p className="text-green-400 text-center mt-3">
+                  Message sent successfully!
+                </p>
               )}
             </form>
           </div>
         </div>
 
-        {/* Map Section */}
-        <div className="map-section">
-          <h2>Find Us Here</h2>
-          <div className="map-placeholder">
-            <div className="map-overlay">
-              <i className="fas fa-map-marker-alt"></i>
-              <p>Memon Colony Front Of Dadi Amma Masjid Nagpur 440026</p>
-            </div>
-          </div>
+        {/* Map */}
+        <div className="mt-16 bg-gray-800 border border-gray-700 rounded-xl p-10 text-center text-gray-300">
+          📍 Momon Colony, Old Kampthee Road, Kalamna, Nagpur
         </div>
+
+        <SocialLinks />
       </div>
-      <SocialLinks/>
-    </div>
+    </section>
   );
 };
 

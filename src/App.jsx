@@ -10,6 +10,11 @@ import About from './Components/About'
 import Service from './Components/Service'
 import Teampage from './Components/Teampage'
 import Contact from './Components/Contact'
+import SeCards from './Components/servicesCards'
+import Process from './Components/process'
+import Start from './Components/Start'
+import Portfolio from './Components/Portfolio'
+import Currer from './Components/CareersPage'
 
 const App = () => {
   return (
@@ -26,18 +31,21 @@ const App = () => {
               <>
                 <Herosection />
                 <Cards/>
-                <Ourclient />
+                <SeCards />
+                <Process />
+                <Start />
+                {/* <Ourclient /> */}
               </>
             } />
-            
+           
             {/* Other Pages */}
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Service/>} />
-            <Route path="/team" element={<Teampage/>} />
+            <Route path="/team" element={<Portfolio/>} />
             <Route path="/contact" element={<Contact/>} />
+            <Route path="/careers" element={<Currer/>} />
           </Routes>
         </main>
-        
         {/* Footer appears on all pages */}
         <Footer />
       </div>
