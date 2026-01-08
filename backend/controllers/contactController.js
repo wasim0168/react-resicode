@@ -123,9 +123,9 @@ From: RESICODE Website
     };
     
   } catch (error) {
-    console.error('❌ Email sending failed:', error);
-    throw new Error(`Failed to send email: ${error.message}`);
-  }
+  console.error('❌ Email sending failed:', error);
+  throw new Error(`Failed to send email: ${error.message}`);
+}
 };
 
 const handleContactSubmission = async (req, res) => {
@@ -153,19 +153,13 @@ const handleContactSubmission = async (req, res) => {
       emailSent: !emailResult.simulated
     });
     
-    // Respond to client
     res.json({
-      success: true,
-      message: emailResult.simulated 
-        ? 'Message received! (Email service not configured - check backend console)' 
-        : 'Thank you! Your message has been sent successfully.',
-      data: {
-        name: req.body.name,
-        email: req.body.email,
-        timestamp: new Date().toISOString()
-      },
-      debug: emailResult.simulated ? { received: req.body } : undefined
-    });
+  success: true,
+  message: emailResult.simulated
+    ? "Thank you! Your message has been received. We will contact you shortly."
+    : "Thank you! Your message has been sent successfully."
+});
+
     
   } catch (error) {
     console.error('❌ Contact processing error:', error);
