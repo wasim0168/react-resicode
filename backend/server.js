@@ -1,61 +1,109 @@
-// const express = require('express');
-// const cors = require('cors');
-// const dotenv = require('dotenv');
-// const bodyParser = require('body-parser');
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+require('dotenv').config();
 
-// // Load environment variables
-// dotenv.config();
+const app = express();
+const PORT = process.env.PORT || 5000;
 
-// const app = express();
+// Import routes
+const contactRoutes = require('./routes/contactRoutes');
 
-// // Middleware
-// app.use(cors({
-//   origin: process.env.CLIENT_URL,
-//   credentials: true
-// }));
+// Security middleware
+app.use(helmet());
+app.use(cors({
+  origin: process.env.ALLOWED_ORIGINS ? 
+    process.env.ALLOWED_ORIGINS.split(',') : 
+    ['http://localhost:3000', 'http://localhost:5173'],
+  credentials: true
+}));
 
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
+app.use('/api/', limiter);
 
-// // Import routes
-// const contactRoutes = require('./routes/contactRoutes');
-// app.use('/api', contactRoutes);
+// Body parsing
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// // Basic route
-// app.get('/', (req, res) => {
-//   res.json({ message: 'Resicode Backend API is running!' });
-// });
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  next();
+});
 
-// // Health check route
-// app.get('/api/health', (req, res) => {
-//   res.json({ 
-//     status: 'OK', 
-//     timestamp: new Date().toISOString(),
-//     service: 'Resicode Contact API'
-//   });
-// });
+// Routes
+app.use('/api/contact', contactRoutes);
 
-// // Error handling middleware
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   res.status(500).json({ 
-//     success: false, 
-//     message: 'Something went wrong!',
-//     error: process.env.NODE_ENV === 'development' ? err.message : {}
-//   });
-// });
+// Health check
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'healthy',
+    service: 'resicode-backend',
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
 
-// // 404 handler
-// app.use('*', (req, res) => {
-//   res.status(404).json({ 
-//     success: false, 
-//     message: 'Route not found' 
-//   });
-// });
+// Test endpoint
+app.get('/api/test', (req, res) => {
+  res.json({ 
+    message: 'Backend is working!',
+    endpoints: {
+      contact: '/api/contact/send',
+      health: '/api/health',
+      test: '/api/test'
+    }
+  });
+});
 
-// // Start server
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => {
-//   console.log(`🚀 Server running on port ${PORT}`);
-//   console.log(`📧 Email service: ${process.env.EMAIL_USER ? 'Configured' : 'Not configured'}`);
-// });
+// 404 handler
+app.use('*', (req, res) => {
+  res.status(404).json({
+    success: false,
+    error: 'Endpoint not found',
+    path: req.originalUrl
+  });
+});
+
+// Error handler
+app.use((err, req, res) => {
+  console.error('Server error:', err);
+  res.status(500).json({
+    success: false,
+    error: process.env.NODE_ENV === 'production' 
+      ? 'Internal server error' 
+      : err.message,
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+  });
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`
+  🚀 RESICODE Backend Server Started!
+  ====================================
+  📍 Port: ${PORT}
+  🌐 Environment: ${process.env.NODE_ENV || 'development'}
+  🔗 URL: http://localhost:${PORT}
+  
+  📧 Email Status: ${process.env.EMAIL_USER ? '✅ Configured' : '⚠️ Not configured'}
+  
+  🔗 Available Endpoints:
+  • Health:    http://localhost:${PORT}/api/health
+  • Test:      http://localhost:${PORT}/api/test
+  • Contact:   http://localhost:${PORT}/api/contact/send
+  
+  ⚡ To configure email:
+  1. Copy .env.example to .env
+  2. Add your email credentials
+  3. Restart server
+  
+  ====================================
+  `);
+});
