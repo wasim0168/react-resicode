@@ -1,47 +1,34 @@
 const nodemailer = require("nodemailer");
 
 const getEmailConfig = () => {
-  const {
-    EMAIL_USER,
-    EMAIL_PASS,
-    EMAIL_TO,
-    EMAIL_SERVICE
-  } = process.env;
-
-  const isConfigured = !!(EMAIL_USER && EMAIL_PASS && EMAIL_TO);
+  const { EMAIL_USER, EMAIL_TO, EMAIL_SERVICE } = process.env;
 
   return {
-    isConfigured,
+    isConfigured: !!EMAIL_USER,
     service: EMAIL_SERVICE || "gmail",
-    from: EMAIL_USER || "no-reply@resicode.com",
+    from: EMAIL_USER,
     to: EMAIL_TO || EMAIL_USER
   };
 };
 
 const createTransporter = () => {
-  try {
-    const { EMAIL_USER, EMAIL_PASS, EMAIL_SERVICE } = process.env;
+  const { EMAIL_USER, EMAIL_PASS, EMAIL_SERVICE } = process.env;
 
-    // ❗ IMPORTANT: If not configured, RETURN NULL (not throw)
-    if (!EMAIL_USER || !EMAIL_PASS) {
-      console.warn("⚠️ Email not configured properly");
-      return null;
-    }
-
-    return nodemailer.createTransport({
-      service: EMAIL_SERVICE || "gmail",
-      auth: {
-        user: EMAIL_USER,
-        pass: EMAIL_PASS
-      }
-    });
-  } catch (error) {
-    console.error("❌ Transporter creation failed:", error.message);
-    return null; // ⬅️ THIS FIXES 500 ERROR
+  if (!EMAIL_USER || !EMAIL_PASS) {
+    console.warn("⚠️ Email ENV missing");
+    return null;
   }
+
+  return nodemailer.createTransport({
+    service: EMAIL_SERVICE || "gmail",
+    auth: {
+      user: EMAIL_USER,
+      pass: EMAIL_PASS
+    },
+    connectionTimeout: 10000, // ⬅️ important
+    greetingTimeout: 10000,
+    socketTimeout: 10000
+  });
 };
 
-module.exports = {
-  createTransporter,
-  getEmailConfig
-};
+module.exports = { createTransporter, getEmailConfig };
