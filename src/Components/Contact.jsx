@@ -97,11 +97,11 @@ const ContactPage = () => {
         );
       }
     } catch (error) {
-      console.error("Error:", error);
-      setErrorMessage(
-        "Failed to connect to server. Please try again later."
-      );
-    } finally {
+  console.error("Error sending contact form:", error);
+  setErrorMessage(
+    error.message || "Failed to connect to server. Please try again later."
+  );
+}finally {
       setIsSubmitting(false);
     }
   };
