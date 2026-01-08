@@ -10,117 +10,49 @@ const PORT = process.env.PORT || 5000;
 // Routes
 const contactRoutes = require("./routes/contactRoutes");
 
-/* =========================
-   Security Middleware
-========================= */
+// Security
 app.use(helmet());
 
-/* =========================
-   ✅ FIXED CORS (IMPORTANT)
-========================= */
-app.use(
-  cors({
-    origin: [
-      "https://resicode.com",
-      "https://www.resicode.com"
-    ],
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true
-  })
-);
+// CORS
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(",")
+  : ["http://localhost:3000"];
 
-// 👇 Preflight support (VERY IMPORTANT)
-app.options("*", cors());
+app.use(cors({ origin: (origin, cb) => (!origin || allowedOrigins.includes(origin) ? cb(null, true) : cb(new Error("Not allowed by CORS"))), credentials: true }));
 
-/* =========================
-   Rate Limiting
-========================= */
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false
-});
-
+// Rate limiting
+const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
 app.use("/api/", limiter);
 
-/* =========================
-   Body Parsers
-========================= */
+// Body parsers
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
-/* =========================
-   Logger
-========================= */
+// Logger
 app.use((req, res, next) => {
-  console.log(
-    `[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`
-  );
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
   next();
 });
 
-/* =========================
-   Routes
-========================= */
+// Routes
 app.use("/api/contact", contactRoutes);
 
-/* =========================
-   Health
-========================= */
-app.get("/api/health", (req, res) => {
-  res.json({
-    success: true,
-    status: "healthy",
-    service: "resicode-backend",
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || "development"
-  });
-});
+// Health
+app.get("/api/health", (req, res) => res.json({ status: "healthy", service: "resicode-backend", timestamp: new Date().toISOString() }));
 
-app.get("/api/test", (req, res) => {
-  res.json({
-    success: true,
-    message: "Backend is working 🚀"
-  });
-});
+// 404
+app.use("*", (req, res) => res.status(404).json({ success: false, message: "Endpoint not found" }));
 
-/* =========================
-   404
-========================= */
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: "Endpoint not found"
-  });
-});
-
-/* =========================
-   Error Handler
-========================= */
+// Global error handler
 app.use((err, req, res, next) => {
-  console.error("❌ Server Error:", err);
+  console.error("❌ Server Error:", err.stack || err.message);
   res.status(500).json({
     success: false,
-    message: "Internal server error"
-    
+    message: process.env.NODE_ENV === "production" ? "Internal server error" : err.message
   });
-  next()
 });
 
-/* =========================
-   Start
-========================= */
+// Start
 app.listen(PORT, () => {
-  console.log(`
-🚀 RESICODE Backend LIVE
-====================================
-🌐 Frontend : https://resicode.com
-🔗 Backend  : https://react-resicode-1.onrender.com
-📍 Port     : ${PORT}
-
-✅ CORS FIXED
-====================================
-`);
+  console.log(`🚀 RESICODE Backend Running at port ${PORT}`);
 });
