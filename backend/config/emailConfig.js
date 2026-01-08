@@ -1,40 +1,47 @@
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer");
+
+const getEmailConfig = () => {
+  const {
+    EMAIL_USER,
+    EMAIL_PASS,
+    EMAIL_TO,
+    EMAIL_SERVICE
+  } = process.env;
+
+  const isConfigured = !!(EMAIL_USER && EMAIL_PASS && EMAIL_TO);
+
+  return {
+    isConfigured,
+    service: EMAIL_SERVICE || "gmail",
+    from: EMAIL_USER || "no-reply@resicode.com",
+    to: EMAIL_TO || EMAIL_USER
+  };
+};
 
 const createTransporter = () => {
-  // Check if email is configured
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    console.log('⚠️ Email not configured. Using test mode.');
-    return null;
-  }
-
   try {
-    const transporter = nodemailer.createTransport({
-      service: process.env.EMAIL_SERVICE || 'gmail',
-      host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-      port: process.env.EMAIL_PORT || 587,
-      secure: process.env.EMAIL_SECURE === 'true',
+    const { EMAIL_USER, EMAIL_PASS, EMAIL_SERVICE } = process.env;
+
+    // ❗ IMPORTANT: If not configured, RETURN NULL (not throw)
+    if (!EMAIL_USER || !EMAIL_PASS) {
+      console.warn("⚠️ Email not configured properly");
+      return null;
+    }
+
+    return nodemailer.createTransport({
+      service: EMAIL_SERVICE || "gmail",
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      },
-      tls: {
-        rejectUnauthorized: false
+        user: EMAIL_USER,
+        pass: EMAIL_PASS
       }
     });
-
-    console.log('✅ Email transporter created successfully');
-    return transporter;
   } catch (error) {
-    console.error('❌ Error creating email transporter:', error.message);
-    return null;
+    console.error("❌ Transporter creation failed:", error.message);
+    return null; // ⬅️ THIS FIXES 500 ERROR
   }
 };
 
-const getEmailConfig = () => ({
-  isConfigured: !!(process.env.EMAIL_USER && process.env.EMAIL_PASS),
-  from: `"RESICODE Contact" <${process.env.EMAIL_USER}>`,
-  to: process.env.RECIPIENT_EMAIL || process.env.EMAIL_USER,
-  service: process.env.EMAIL_SERVICE || 'gmail'
-});
-
-module.exports = { createTransporter, getEmailConfig };
+module.exports = {
+  createTransporter,
+  getEmailConfig
+};
