@@ -7,48 +7,37 @@ import ui from './Logos/ui.png';
 import seo from './Logos/seo.png';
 import custom from './Logos/custom.png';
 import wasim from './Logos/wasim.jpg';
-import manoj from './Logos/manoj.png';
-import aditya from './Logos/aditya.png';
 import devesh from './Logos/devesh.jpg';
 import rishbh from './Logos/rishabh.jpg';
 const AboutUs = () => {
   const teamMembers = [
-    {
-      id: 1,
-      name: "Wasim Sheikh",
-      position: "(Chairman & CTO)",
-      image: wasim,
-      description: "Strategic Vision & Business Development",
-      skills: [ "Technology Strategy",
-      "System Architecture",
-      "Leadership",
-      "Product Vision",
-      "Innovation"]
-    },
-    {
-      id: 2,
-      name: "Manoj Nagpure",
-      position: "CEO",
-      image: manoj,
-      description: "Overall Operations & Growth Strategy",
-      skills: ["Business Strategy",
-      "Operations Management",
-      "Team Leadership",
-      "Decision Making"]
-    },
-    {
-      id: 3,
-      name: "Aditya Rahangadale",
-      position: "CMO",
-      image: aditya,
-      description: "Marketing & Brand Strategy",
-      skills: ["Digital Marketing",
-      "SEO & Content",
-      "Growth Marketing",
-      "Market Analysis"]
-    }
-  ];
+  {
+    id: 1,
+    name: "Wasim Sheikh",
+    position: "Chairman & CEO",
+    image: wasim,
+    description: "Strategic Vision & Business Development Leader with expertise in technology strategy and innovation.",
+    skills: ["Technology Strategy", "System Architecture", "Leadership", "Product Vision", "Innovation"]
+  },
+  {
+    id: 2,
+    name: "Devesh Wadibhasme",
+    position: "CTO & Lead Developer",
+    image: devesh,
+    description: "Full-stack development expert specializing in scalable architecture and backend systems.",
+    skills: ["Node.js", "System Architecture", "API Development", "DevOps", "Database Design"]
+  },
+  {
+    id: 3,
+    name: "Rishabh Nandankar",
+    position: "Frontend Lead & UI/UX Director",
+    image: rishbh,
+    description: "Creating beautiful, responsive user interfaces with focus on user experience and modern design.",
+    skills: ["React", "UI/UX Design", "Next.js", "Tailwind CSS", "Frontend Architecture"]
+  }
+];
 
+console.log(teamMembers);
 
   const values = [
   {
@@ -398,233 +387,120 @@ const AboutUs = () => {
 
 
       {/* Team Section */}
-     <section className="py-20 bg-gray-900 text-white">
+     {/* Updated Team Section */}
+<section className="py-20 bg-gray-900 text-white">
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
+    
     {/* Section Heading */}
     <div className="text-center mb-14">
-      <h2 className="text-4xl font-bold mb-4">Meet Our Team</h2>
+      <h2 className="text-4xl font-bold mb-4">Meet Our Leadership Team</h2>
       <p className="text-lg text-blue-200 max-w-3xl mx-auto">
-        The passionate professionals behind Resicode's success story
+        The visionary leaders driving RESICODE's innovation and growth
       </p>
     </div>
 
-    {/* Team Grid */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-      {teamMembers.map((member) => (
-        <div
-          key={member.id}
-          className="bg-gray-800 rounded-2xl p-8 text-center
-                     transform transition duration-300
-                     hover:-translate-y-3 hover:shadow-2xl"
-        >
-
-          {/* Profile Image */}
-          <div className="flex justify-center mb-5">
-            <img
-              src={member.image}
-              alt={member.name}
-              className="w-28 h-28 rounded-full object-cover
-                         border-4 border-[#FBDB57]
-                         shadow-lg"
-            />
-          </div>
-
-          {/* Name */}
-          <h3 className="text-xl font-semibold mb-1">
-            {member.name}
-          </h3>
-
-          {/* Position */}
-          <p className="text-[#F45DA2] font-medium mb-3">
-            {member.position}
-          </p>
-
-          {/* Description */}
-          <p className="text-gray-300 text-sm mb-5 leading-relaxed">
-            {member.description}
-          </p>
-
-          {/* Skills */}
-          <div className="flex flex-wrap justify-center gap-2">
-            {member.skills.map((skill, index) => (
-              <span
-                key={index}
-                className="bg-gray-700 px-3 py-1 rounded-full text-xs
-                           text-gray-200 hover:bg-[#FBDB57] hover:text-black
-                           transition"
-              >
-                {skill}
-              </span>
-            ))}
-          </div>
-
+    {/* Team Grid - Updated with all 3 members */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {/* Wasim Sheikh */}
+      <div className="bg-gray-800 rounded-2xl p-8 text-center transform transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
+        <div className="flex justify-center mb-6">
+          <img
+            src={wasim}
+            alt="Wasim Sheikh"
+            className="w-32 h-32 rounded-full object-cover border-4 border-[#FBDB57] shadow-lg"
+          />
         </div>
-      ))}
+        <h3 className="text-2xl font-bold mb-1">Wasim Sheikh</h3>
+        <p className="text-[#F45DA2] font-semibold mb-3">Chairman & CEO</p>
+        <p className="text-gray-300 mb-6 leading-relaxed">
+          Strategic Vision & Business Development Leader with expertise in technology strategy and innovation.
+        </p>
+        <div className="flex flex-wrap justify-center gap-2">
+          {["Technology Strategy", "System Architecture", "Leadership", "Product Vision", "Innovation"].map((skill, index) => (
+            <span
+              key={index}
+              className="bg-gray-700 px-3 py-1 rounded-full text-xs text-gray-200 hover:bg-[#FBDB57] hover:text-black transition"
+            >
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Devesh Wadibhasme */}
+      <div className="bg-gray-800 rounded-2xl p-8 text-center transform transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
+        <div className="flex justify-center mb-6">
+          <img
+            src={devesh}
+            alt="Devesh Wadibhasme"
+            className="w-32 h-32 rounded-full object-cover border-4 border-[#F45DA2] shadow-lg"
+          />
+        </div>
+        <h3 className="text-2xl font-bold mb-1">Devesh Wadibhasme</h3>
+        <p className="text-[#45CFFF] font-semibold mb-3">Full Stack Developer</p>
+        <p className="text-gray-300 mb-6 leading-relaxed">
+          Full-stack development expert specializing in scalable architecture and backend systems.
+        </p>
+        <div className="flex flex-wrap justify-center gap-2">
+          {["Node.js", "System Architecture", "API Development", "DevOps", "Database Design"].map((skill, index) => (
+            <span
+              key={index}
+              className="bg-gray-700 px-3 py-1 rounded-full text-xs text-gray-200 hover:bg-[#45CFFF] hover:text-black transition"
+            >
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Rishabh Nandankar */}
+      <div className="bg-gray-800 rounded-2xl p-8 text-center transform transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
+        <div className="flex justify-center mb-6">
+          <img
+            src={rishbh}
+            alt="Rishabh Nandankar"
+            className="w-32 h-32 rounded-full object-cover border-4 border-[#FBDB57] shadow-lg"
+          />
+        </div>
+        <h3 className="text-2xl font-bold mb-1">Rishabh Nandankar</h3>
+        <p className="text-[#F45DA2] font-semibold mb-3">Frontend Lead & UI/UX Designer</p>
+        <p className="text-gray-300 mb-6 leading-relaxed">
+          Creating beautiful, responsive user interfaces with focus on user experience and modern design.
+        </p>
+        <div className="flex flex-wrap justify-center gap-2">
+          {["React", "UI/UX Design", "Next.js", "Tailwind CSS", "Frontend Architecture"].map((skill, index) => (
+            <span
+              key={index}
+              className="bg-gray-700 px-3 py-1 rounded-full text-xs text-gray-200 hover:bg-[#FBDB57] hover:text-black transition"
+            >
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
     </div>
 
-  </div>
-</section>
-
-
-<section className="py-20 bg-gray-950 text-white">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-    {/* Section Header */}
-    <div className="text-center mb-16">
-      <h2 className="text-4xl font-bold mb-4">
-        Our Technical Team
-      </h2>
-      <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-        A skilled group of engineers, designers, and innovators powering
-        Resicode’s cutting-edge digital solutions
-      </p>
-    </div>
-
-    {/* Team Grid */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-
-      {/* Card 1 */}
-      <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8 text-center
-                      hover:-translate-y-3 transition duration-300 hover:shadow-2xl">
-
-        <img
-          src={rishbh}
-          alt="Frontend Developer"
-          className="w-24 h-24 mx-auto rounded-full object-cover
-                     border-4 border-[#FBDB57] shadow-lg mb-5"
-        />
-
-        <h3 className="text-xl font-semibold mb-1">Rishabh Nandankar</h3>
-        <p>FrontEnd Developer</p>
-        <p className="text-[#F45DA2] text-sm mb-4">UI Engineer</p>
-
-        <p className="text-gray-400 text-sm mb-5">
-          Crafting fast, responsive, and user-friendly interfaces using modern
-          frontend frameworks.
-        </p>
-
-        <div className="flex flex-wrap justify-center gap-2">
-          {["React", "Next.js", "Tailwind", "UI Animations"].map((skill, i) => (
-            <span
-              key={i}
-              className="bg-gray-800 px-3 py-1 rounded-full text-xs
-                         hover:bg-[#FBDB57] hover:text-black transition"
-            >
-              {skill}
-            </span>
-          ))}
-        </div>
+    {/* Team Stats */}
+    <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="text-center p-6 bg-gray-800 rounded-xl">
+        <div className="text-3xl font-bold text-[#FBDB57] mb-2">3+</div>
+        <div className="text-gray-300">Years Experience</div>
       </div>
-
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8 text-center
-                      hover:-translate-y-3 transition duration-300 hover:shadow-2xl">
-
-        <img
-          src={manoj}
-          alt="UI/UX Designer"
-          className="w-24 h-24 mx-auto rounded-full object-cover
-                     border-4 border-[#FBDB57] shadow-lg mb-5"
-        />
-
-        <h3 className="text-xl font-semibold mb-1">Manoj Nagpure</h3>
-        <p>FrontEnd Developer</p>
-        <p className="text-[#F45DA2] text-sm mb-4">Experience Designer</p>
-
-        <p className="text-gray-400 text-sm mb-5">
-          Designing intuitive, user-centric interfaces that enhance usability
-          and boost conversions.
-        </p>
-
-        <div className="flex flex-wrap justify-center gap-2">
-          {["Figma", "User Research", "Wireframing", "Prototyping"].map((skill, i) => (
-            <span
-              key={i}
-              className="bg-gray-800 px-3 py-1 rounded-full text-xs
-                         hover:bg-[#FBDB57] hover:text-black transition"
-            >
-              {skill}
-            </span>
-          ))}
-        </div>
+      <div className="text-center p-6 bg-gray-800 rounded-xl">
+        <div className="text-3xl font-bold text-[#FBDB57] mb-2">10+</div>
+        <div className="text-gray-300">Projects Completed</div>
       </div>
-
-      {/* Card 2 */}
-      <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8 text-center
-                      hover:-translate-y-3 transition duration-300 hover:shadow-2xl">
-
-        <img
-          src={devesh}
-          alt="Backend Developer"
-          className="w-24 h-24 mx-auto rounded-full object-cover
-                     border-4 border-[#F45DA2] shadow-lg mb-5"
-        />
-
-        <h3 className="text-xl font-semibold mb-1">Devesh Wadibhasme</h3>
-        <p>Backend Developer</p>
-        <p className="text-[#FBDB57] text-sm mb-4">Web Engineer</p>
-
-        <p className="text-gray-400 text-sm mb-5">
-         Handling complete application development from frontend to backend
-          with seamless integration.
-        </p>
-
-        <div className="flex flex-wrap justify-center gap-2">
-          {["Node.js", "Express", "MongoDB", "API Security"].map((skill, i) => (
-            <span
-              key={i}
-              className="bg-gray-800 px-3 py-1 rounded-full text-xs
-                         hover:bg-[#F45DA2] hover:text-black transition"
-            >
-              {skill}
-            </span>
-          ))}
-        </div>
+      <div className="text-center p-6 bg-gray-800 rounded-xl">
+        <div className="text-3xl font-bold text-[#FBDB57] mb-2">100%</div>
+        <div className="text-gray-300">Client Satisfaction</div>
       </div>
-
-      {/* Card 3 */}
-      <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8 text-center
-                      hover:-translate-y-3 transition duration-300 hover:shadow-2xl">
-
-        <img
-          src={wasim}
-          alt="Full Stack Developer"
-          className="w-24 h-24 mx-auto rounded-full object-cover
-                     border-4 border-[#45CFFF] shadow-lg mb-5"
-        />
-
-        <h3 className="text-xl font-semibold mb-1">Wasim Sheikh</h3>
-        <p>MERN Stack Developer</p>
-        <p className="text-[#45CFFF] text-sm mb-4">System Architect</p>
-
-        <p className="text-gray-400 text-sm mb-5">
-          
-           Building scalable, secure backend systems and APIs that power
-          high-performance applications.
-        </p>
-
-        <div className="flex flex-wrap justify-center gap-2">
-          {["React", "Node.js", "REST APIs", "DevOps"].map((skill, i) => (
-            <span
-              key={i}
-              className="bg-gray-800 px-3 py-1 rounded-full text-xs
-                         hover:bg-[#45CFFF] hover:text-black transition"
-            >
-              {skill}
-            </span>
-          ))}
-        </div>
+      <div className="text-center p-6 bg-gray-800 rounded-xl">
+        <div className="text-3xl font-bold text-[#FBDB57] mb-2">10+</div>
+        <div className="text-gray-300">Happy Clients</div>
       </div>
-
-      {/* Card 4 */}
-    
-
     </div>
   </div>
 </section>
-
-
-
       {/* Timeline Section */}
       <section className="py-20 bg-gray-950 text-white relative overflow-hidden">
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

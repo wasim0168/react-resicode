@@ -44,7 +44,7 @@ const Herosection = () => {
 <div className="hero-stats-wrapper">
   <div className="hero-stats-grid">
     {[
-      ['50+', 'Projects Completed'],
+      ['10+', 'Projects Completed'],
       ['98%', 'Client Satisfaction'],
       ['4.9/5', 'Rating'],
       ['24/7', 'Support'],

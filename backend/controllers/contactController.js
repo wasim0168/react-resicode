@@ -55,6 +55,7 @@ const handleContactSubmission = async (req, res) => {
 
     // Validate
     const validation = validateContactData(req.body);
+    
     if (!validation.isValid)
       return res.status(400).json({
         success: false,

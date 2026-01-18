@@ -47,7 +47,7 @@ const CardsWithHover = () => {
           </div>
 
           <div className="bg-gradient-to-r from-green-500 to-teal-600 hover:from-teal-600 hover:to-green-500 text-white rounded-xl shadow-lg p-4 sm:p-6 transform transition duration-300 hover:scale-105">
-            <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">50+</h3>
+            <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">10+</h3>
             <p className="text-sm sm:text-base">Projects Delivered</p>
           </div>
 
